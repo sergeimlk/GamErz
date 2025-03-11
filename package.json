@@ -1,5 +1,20 @@
 {
+  "scripts": {
+    "build": "tsc",
+    "start": "node --inspect=5858 -r ts-node/register ./src/index.ts",
+    "dev": "nodemon --watch src --ext ts --ignore node_modules --ignore dist --ignore '*.test.ts' --exec npm run start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.10",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
     "typescript": "^5.8.2"
   }
 }
