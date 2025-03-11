@@ -2,7 +2,7 @@ import mongoose, { Schema, Document } from "mongoose";
 
 export interface ISalon extends Document {
   _id: mongoose.Types.ObjectId;
-  name: String;
+  name: string;
 }
 
 const SalonSchema: Schema = new Schema({
