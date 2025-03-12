@@ -8,7 +8,7 @@ export abstract class AbstractCrudRepository<T extends Document> implements ICru
     this.model = model;
   }
 
-  async findAll(): Promise<T[]> {
+  async findAll(): Promise<Array<T>> {
     try {
       return await this.model.find().exec();
     } catch (error) {
