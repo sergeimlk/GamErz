@@ -1,10 +1,15 @@
 import { Request, Response } from "express";
-import RoleModel from "../models/IRole";
+import RoleService from "../services/RoleService";
 
 export class RoleController {
-  async getRoles(req: Request, res: Response): Promise<void> {
-    const query = RoleModel.find({});
-    const data = await query.exec();
+  roleService: RoleService;
+
+  constructor(roleService: RoleService) {
+    this.roleService = roleService;
+  }
+
+  async getRoles(_: Request, res: Response): Promise<void> {
+    const data = await this.roleService.findAll();
     res.send(data);
   }
 }
