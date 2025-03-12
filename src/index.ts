@@ -3,16 +3,21 @@ import "dotenv/config";
 import connectDB from "./db";
 import router from "./routes/routes";
 
-const app = express();
 const PORT = process.env.SERVER_PORT || 8080;
-app.use(router);
+
 
 try {
   connectDB().then(() => {
+    const app = express();
+    
+    app.use("/api", router);
+    
     app.listen(PORT, () => {
       console.log(`[server] Server running on port ${PORT}`);
     });
   });
-} catch (error) {
+}
+
+catch (error) {
   console.log(error);
 }

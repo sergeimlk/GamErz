@@ -9,7 +9,7 @@ const connectDB = async () => {
     }
     
     catch (error) {
-      throw new Error('Function not implemented.');
+      throw new Error('[DB][Error] MongoDB connection failed.');
     }
   }
 }
