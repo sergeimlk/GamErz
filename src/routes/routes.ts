@@ -1,9 +1,9 @@
 import { Router } from "express";
-import ApplicationRoutes from "./ApplicationRoutes";
 import UserRoutes from "./UserRoutes";
+import RoleRoutes from "./RoleRoutes";
 
 const router: Router = Router();
-router.use("/application", ApplicationRoutes);
 router.use("/users", UserRoutes);
+router.use("/roles", RoleRoutes);
 
 export default router;

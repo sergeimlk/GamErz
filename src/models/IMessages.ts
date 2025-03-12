@@ -1,20 +1,17 @@
 import mongoose, { Schema, Document } from "mongoose";
+import { IUser } from "./IUser";
 
 export interface IMessage extends Document {
-  _id: mongoose.Types.ObjectId;
-  date: Date;
   message: string;
+  user_id: mongoose.Types.ObjectId | IUser;
 }
 
-const MessageSchema: Schema = new Schema({
-  _id: {
-    type: mongoose.Types.ObjectId,
-    index: true,
-    required: true,
-    auto: true,
+const MessageSchema: Schema = new Schema(
+  {
+    message: { type: String, required: true },
+    user_id: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
   },
-  date: { type: Date, required: true, default: () => new Date() },
-  message: { type: String, required: true },
-});
+  { timestamps: true }
+);
 
 export default mongoose.model<IMessage>("Message", MessageSchema);
