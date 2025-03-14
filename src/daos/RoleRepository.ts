@@ -1,9 +1,9 @@
-import RoleModel, { IRole } from "../models/IRole";
+import RoleModel, { IRole } from "../models/RoleModel";
 import { AbstractCrudRepository } from "./AbstractCrudRepository";
 
 class RoleRepository extends AbstractCrudRepository<IRole> {
   constructor() {
-    super(RoleModel)
+    super(RoleModel);
   }
 
   async setRoles(roles: Array<string>): Promise<void> {

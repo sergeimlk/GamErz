@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { IRole } from "./IRole";
+import { IRole } from "./RoleModel";
 
 export interface IUser extends Document {
   email: string;

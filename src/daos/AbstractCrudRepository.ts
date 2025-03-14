@@ -16,7 +16,6 @@ export abstract class AbstractCrudRepository<T extends Document> implements ICru
     }
   }
 
-
   async findById(id: string): Promise<T | null> {
     try {
       return await this.model.findById(id).exec();
@@ -25,7 +24,6 @@ export abstract class AbstractCrudRepository<T extends Document> implements ICru
     }
   }
 
-
   async update(id: string, updateData: Partial<T>): Promise<T | null> {
     try {
       return await this.model.findByIdAndUpdate(id, updateData, { new: true }).exec();
@@ -33,7 +31,6 @@ export abstract class AbstractCrudRepository<T extends Document> implements ICru
       throw new Error(`[DB][Error] Failed to update document: ${error}`);
     }
   }
-
 
   async delete(id: string): Promise<void> {
     try {
