@@ -1,18 +1,13 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface ISalon extends Document {
-  _id: mongoose.Types.ObjectId;
   name: string;
+  img: string;
 }
 
 const SalonSchema: Schema = new Schema({
-  _id: {
-    type: mongoose.Types.ObjectId,
-    index: true,
-    required: true,
-    auto: true,
-  },
   name: { type: String, required: true },
+  img: { type: String },
 });
 
 export default mongoose.model<ISalon>("Salon", SalonSchema);
