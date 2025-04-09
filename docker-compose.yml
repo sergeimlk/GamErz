@@ -1,0 +1,15 @@
+services:
+  mongodb:
+    image: mongodb/mongodb-community-server:7.0.7-ubuntu2204
+    container_name: mongodb
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    volumes:
+      - mongodb-gamerz-data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
+    restart: always
+
+volumes:
+  mongodb-gamerz-data:

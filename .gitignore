@@ -1,4 +1,15 @@
-.env
+# dependencies
 node_modules/
 
+# secrets
+.env
+
+# ide
+.code
+.vscode
+.idea
+
+# build target
+build/
+target/
 dist/
