@@ -1,11 +1,11 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 export interface RoleDTO extends mongoose.Document {
   role: string;
 }
 
-// const RoleSchema: Schema = new Schema({
-//   role: { type: String, required: true },
-// });
+const RoleSchema: Schema = new Schema({
+  role: { type: String, required: true },
+});
 
-// export default mongoose.model<IRole>("Role", RoleSchema);
+export default mongoose.model<RoleDTO>("Role", RoleSchema);
