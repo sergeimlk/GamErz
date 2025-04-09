@@ -1,17 +1,23 @@
 import { Router } from "express";
 import AuthenticationController from "./controllers/Authentication.Controller";
+import RoleController from "./controllers/Role.Controller";
 
 export default class MainRouter {
   router: Router;
 
-  constructor(private authenticationController: AuthenticationController) {
+  constructor(
+    private roleController: RoleController,
+    private authenticationController: AuthenticationController
+  ) {
     this.router = Router();
   }
 
   initRoutes(): Router {
     const authHandler = this.authenticationController.handleAuthentication();
+    const rolesHandler = this.roleController.handleRoles();
 
     this.router.use("/auth", authHandler);
+    this.router.use("/roles", rolesHandler);
 
     return this.router;
   }

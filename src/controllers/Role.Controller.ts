@@ -1,15 +1,24 @@
-import { Request, Response } from "express";
+import { Request, Response, Router } from "express";
 import RoleService from "../services/Role.Service";
+import { OK } from "../config/httpConstants";
+import handleAsyncController from "../utils/asyncControllerHandler";
+import { userRegistrationSchema } from "../models/User.Model";
 
-export class RoleController {
-  roleService: RoleService;
+export default class RoleController {
+  private router: Router;
 
-  constructor(roleService: RoleService) {
-    this.roleService = roleService;
+  constructor(private roleService: RoleService) {
+    this.router = Router();
+    this.findAll = this.findAll.bind(this);
   }
 
-  async getRoles(_: Request, res: Response): Promise<void> {
-    const data = await this.roleService.findAll();
-    res.send(data);
+  handleRoles(): Router {
+    this.router.post("/all", handleAsyncController(this.findAll));
+    return this.router;
+  }
+
+  async findAll(req: Request, res: Response): Promise<void> {
+    const roles = await this.roleService.findAll();
+    res.status(OK).json(roles);
   }
 }
