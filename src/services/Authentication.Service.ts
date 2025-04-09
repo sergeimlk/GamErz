@@ -4,9 +4,7 @@ import { UserDTO } from "../models/User.Model";
 import bcrypt from "bcrypt";
 
 export default class AuthenticationService {
-  constructor(private userRepository: UserRepository) {
-
-  }
+  constructor(private userRepository: UserRepository) {}
 
   async createUser(user: Partial<UserDTO>): Promise<UserDTO> {
     const password = (await this.encryptPassword(user)) as string;

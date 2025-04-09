@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Request, Response, Router } from "express";
 import AuthenticationService from "../services/Authentication.Service";
 import { OK } from "../config/httpConstants";
 import handleAsyncController from "../utils/asyncControllerHandler";
@@ -9,17 +9,19 @@ export default class AuthenticationController {
 
   constructor(private authenticationService: AuthenticationService) {
     this.router = Router();
+    this.register = this.register.bind(this);
   }
 
   handleAuthentication(): Router {
-    this.router.get("/", handleAsyncController(async (req, res) => {
-      res.status(OK).send("Everything is doing well");
-    }));
+    this.router.post("/register", handleAsyncController(this.register));
     return this.router;
   }
 
-  async register(req: Request, res: Response) {
+  async register(req: Request, res: Response): Promise<void> {
     const userData = userRegistrationSchema.parse(req.body);
+    console.log("test", userData);
+    console.log("test", this.authenticationService);
     const userSaved = await this.authenticationService.createUser(userData);
+    res.status(OK).json(userSaved);
   }
 }

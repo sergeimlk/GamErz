@@ -1,13 +1,10 @@
 import { Router } from "express";
 import AuthenticationController from "./controllers/Authentication.Controller";
 
-
 export default class MainRouter {
   router: Router;
 
-  constructor(
-    private authenticationController: AuthenticationController
-  ) {
+  constructor(private authenticationController: AuthenticationController) {
     this.router = Router();
   }
 
