@@ -12,12 +12,10 @@ export default class RoleController {
   }
 
   handleRoles(): Router {
-    this.router.post(
-      "/",
-      handleAsyncController(async (req, res) => {
-        return await this.findAll(req, res);
-      })
-    );
+    this.router
+      .get("/",
+        handleAsyncController(async (req, res) => await this.findAll(req, res))
+      );
     return this.router;
   }
 
