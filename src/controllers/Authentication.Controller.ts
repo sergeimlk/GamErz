@@ -13,8 +13,17 @@ export default class AuthenticationController {
 
   handleAuthentication(): Router {
     this.router
-      .post("/register",
-        handleAsyncController((req: Request, res: Response) => Promise.resolve(this.register(req, res)))
+      .post(
+        "/register",
+        handleAsyncController((req: Request, res: Response) =>
+          Promise.resolve(this.register(req, res))
+        )
+      )
+      .post(
+        "/login",
+        handleAsyncController((req: Request, res: Response) =>
+          Promise.resolve(this.login(req, res))
+        )
       );
 
     return this.router;
@@ -24,5 +33,9 @@ export default class AuthenticationController {
     const userData = userRegistrationSchema.parse(req.body);
     const userSaved = await this.authenticationService.createUser(userData);
     res.status(OK).json(userSaved);
+  }
+
+  async login(_: Request, res: Response): Promise<void> {
+    res.status(OK).json({ message: "Login successful" });
   }
 }
