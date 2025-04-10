@@ -8,15 +8,21 @@ export default class RoleController {
 
   constructor(private roleService: RoleService) {
     this.router = Router();
-    this.findAll = this.findAll.bind(this);
+    // this.findAll = this.findAll.bind(this);
   }
 
   handleRoles(): Router {
-    this.router.post("/", handleAsyncController(this.findAll));
+    this.router.post(
+      "/",
+      handleAsyncController(async (req, res) => {
+        return await this.findAll(req, res);
+      })
+    );
     return this.router;
   }
 
-  async findAll(req: Request, res: Response): Promise<void> {
+  async findAll(_: Request, res: Response): Promise<void> {
+    console.log("test");
     const roles = await this.roleService.findAll();
     res.status(OK).json(roles);
   }
