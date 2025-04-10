@@ -2,7 +2,6 @@ import { Request, Response, Router } from "express";
 import RoleService from "../services/Role.Service";
 import { OK } from "../config/httpConstants";
 import handleAsyncController from "../utils/asyncControllerHandler";
-import { userRegistrationSchema } from "../models/User.Model";
 
 export default class RoleController {
   private router: Router;
@@ -13,7 +12,7 @@ export default class RoleController {
   }
 
   handleRoles(): Router {
-    this.router.post("/all", handleAsyncController(this.findAll));
+    this.router.post("/", handleAsyncController(this.findAll));
     return this.router;
   }
 
