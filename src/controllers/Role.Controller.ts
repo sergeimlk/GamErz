@@ -8,14 +8,14 @@ export default class RoleController {
 
   constructor(private roleService: RoleService) {
     this.router = Router();
-    // this.findAll = this.findAll.bind(this);
   }
 
   handleRoles(): Router {
     this.router
       .get("/",
-        handleAsyncController(async (req, res) => await this.findAll(req, res))
+        handleAsyncController((req: Request, res: Response) => Promise.resolve(this.findAll(req, res)))
       );
+
     return this.router;
   }
 

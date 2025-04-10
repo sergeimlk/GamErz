@@ -9,11 +9,14 @@ export default class AuthenticationController {
 
   constructor(private authenticationService: AuthenticationService) {
     this.router = Router();
-    this.register = this.register.bind(this);
   }
 
   handleAuthentication(): Router {
-    this.router.post("/register", handleAsyncController(this.register));
+    this.router
+      .post("/register",
+        handleAsyncController((req: Request, res: Response) => Promise.resolve(this.register(req, res)))
+      );
+
     return this.router;
   }
 
