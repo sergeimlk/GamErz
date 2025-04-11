@@ -20,14 +20,14 @@ export const DB_NAME = getEnv("DB_NAME");
 export const DB_USER = getEnv("DB_USER");
 export const DB_PASSWORD = getEnv("DB_PASSWORD");
 export const DB_PORT = getEnv("DB_PORT");
-export const DB_URI = `mongodb://localhost:${DB_PORT}/${DB_NAME}`;
-// export const DB_URI = `mongodb://${DB_USER}:${DB_PASSWORD}@localhost:${DB_PORT}/${DB_NAME}?authSource=admin`;
+// export const DB_URI = `mongodb://localhost:${DB_PORT}/${DB_NAME}`;
+export const DB_URI = `mongodb://${DB_USER}:${DB_PASSWORD}@localhost:${DB_PORT}/${DB_NAME}?authSource=admin`;
 
 // front
 export const FRONT_URL = getEnv("FRONT_URL");
 
 // user auth
-export const SALT_ROUNDS = getEnv("SALT_ROUNDS");
+export const SALT_ROUNDS = parseInt(getEnv("SALT_ROUNDS"));
 
 // jwt
 export const JWT_ACCESS_SECRET = getEnv("JWT_ACCESS_SECRET");

@@ -30,7 +30,7 @@ export default class AuthenticationController {
   }
 
   async register(req: Request, res: Response): Promise<void> {
-    const userData = userRegistrationSchema.parse(req.body);
+    const { confirmationPassword, motivation, ...userData} = userRegistrationSchema.parse(req.body);
     const userSaved = await this.authenticationService.createUser(userData);
     res.status(OK).json(userSaved);
   }

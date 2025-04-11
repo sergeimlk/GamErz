@@ -14,3 +14,6 @@ build/
 target/
 dist/
 .qodo
+
+# local test
+test.rest

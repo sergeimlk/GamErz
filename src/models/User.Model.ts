@@ -8,7 +8,7 @@ const UserMongooseSchema: Schema = new Schema(
     lastName: { type: String, required: true },
     pseudo: { type: String, required: true },
     password: { type: String, required: true },
-    motivation: { type: String, required: true },
+    // motivation: { type: String, required: true },
     avatar: { type: String },
     role_id: { type: mongoose.Types.ObjectId, required: true, ref: "Role" },
   },
@@ -28,6 +28,7 @@ export const userSchema = z.object({
         "Password must be at least 8 characters long and contains uppercase, lowercase, digit and special character.",
     }),
   avatar: z.string().max(255).optional(),
+
   role_id: z.custom<mongoose.Types.ObjectId>(),
 });
 
