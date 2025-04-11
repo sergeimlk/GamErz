@@ -28,7 +28,6 @@ export const userSchema = z.object({
         "Password must be at least 8 characters long and contains uppercase, lowercase, digit and special character.",
     }),
   avatar: z.string().max(255).optional(),
-
   role_id: z.custom<mongoose.Types.ObjectId>(),
 });
 

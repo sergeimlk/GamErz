@@ -10,6 +10,12 @@ export default class AuthenticationService {
     if (!user.password) {
       throw new Error("UserCreation: Password is required");
     }
+    const existingUser = await this.userRepository.findByEmailOrPseudo(
+      user.pseudo as string, user.email as string
+    );
+    if (existingUser === null) {
+      throw new Error("UserCreation: User already exist.")
+    }
 
     user.password = await this.encryptPassword(user.password);
     const userSaved = await this.userRepository.createUser(user);
@@ -30,11 +36,13 @@ export default class AuthenticationService {
 
   async checkPassword({ pseudo, password, email }: Partial<UserDTO>): Promise<boolean> {
     if (!password || !(email || pseudo)) {
-      throw new Error("PasswordCheck: pseudo or email are needed to authenticate user as well as password.");
+      throw new Error("PasswordCheck: Pseudo or email are needed to authenticate user as well as password.");
     }
     const user = await this.userRepository.findByEmailOrPseudo(pseudo as string, email as string);
-    const passwordToCheck = await this.encryptPassword(password);
-    const isValidPassword = await bcrypt.compare(passwordToCheck, user.password);
+    if (!user) {
+      throw new Error("PasswordCheck: User not in the database.");
+    }
+    const isValidPassword = await bcrypt.compare(password, user.password);
     return isValidPassword;
   }
 }

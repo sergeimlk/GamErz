@@ -35,7 +35,9 @@ export default class AuthenticationController {
     res.status(OK).json(userSaved);
   }
 
-  async login(_: Request, res: Response): Promise<void> {
-    res.status(OK).json({ message: "Login successful" });
+  async login(req: Request, res: Response): Promise<void> {
+    const loginData = req.body;
+    const isValidPassword = await this.authenticationService.checkPassword(loginData);
+    res.status(OK).json({ message: isValidPassword ? "valid": "invalid" });
   }
 }

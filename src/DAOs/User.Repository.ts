@@ -12,9 +12,8 @@ class UserRepository extends AbstractCrudRepository<UserDTO> {
     return userSaved;
   }
 
-  async findByEmailOrPseudo(pseudo: string, email: string): Promise<UserDTO> {
+  async findByEmailOrPseudo(pseudo: string, email: string): Promise<UserDTO | null> {
     const user = await this.model.findOne({ $or: [{ email }, { pseudo }] }).exec();
-    if (!user) { throw new Error("DB: User not found."); }
     return user;
   }
 }
