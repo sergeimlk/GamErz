@@ -1,13 +1,12 @@
-import express, { Express } from "express";
-import logger from "./utils/logger";
-import { SERVER_PORT } from "./config/envConstants";
-import dbConnect from "./config/database";
-import init from "./config/init";
+import logger from "../utils/logger";
+import { SERVER_PORT } from "../constants/env";
+import dbConnect from "../config/database";
+import init from "./init";
 
 class App {
   static run() {
     try {
-      const app: Express = init();
+      const app = init();
       app.listen(SERVER_PORT, async (error) => {
         if (error) {
           throw error;

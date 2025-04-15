@@ -1,15 +1,14 @@
-import express from "express";
-import { FRONT_URL } from "./envConstants";
-import errorHandler from "../middlewares/errorHandler";
+import express, { Application } from "express";
+import errorHandler from "../utils/middlewares/errorHandler";
 import handleAsyncController from "../utils/asyncControllerHandler";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import { OK } from "./httpConstants";
-import dependencies from "./dependenciesManager";
+import mainRouter from "../config/dependenciesManager";
+import { FRONT_URL } from "../constants/env";
+import { OK } from "../constants/http";
 
-export default function init() {
+export default function init(): Application {
   const app = express();
-  const deps = dependencies;
 
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
@@ -28,7 +27,7 @@ export default function init() {
     })
   );
 
-  app.use("/api", deps.get("mainRouter").initRoutes());
+  app.use("/api", mainRouter.initRoutes());
   app.use(errorHandler);
 
   return app;

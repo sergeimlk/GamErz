@@ -1,38 +1,38 @@
-import AuthenticationController from "../controllers/Authentication.Controller";
-import AuthenticationService from "../services/Authentication.Service";
-import UserRepository from "../DAOs/User.Repository";
-import MainRouter from "../Router";
-import RoleController from "../controllers/Role.Controller";
-import RoleRepository from "../DAOs/Role.Repository";
-import RoleService from "../services/Role.Service";
+import AuthenticationController from "../App/Controller/Authentication.Controller";
+import AuthenticationService from "../App/Service/Authentication.Service";
+import UserRepository from "../App/DAO/User.Repository";
+import MainRouter from "../App/Router";
+import RoleController from "../App/Controller/Role.Controller";
+import RoleRepository from "../App/DAO/Role.Repository";
+import RoleService from "../App/Service/Role.Service";
+import SessionRepository from "../App/DAO/Session.Repository";
+import UserService from "../App/Service/User.Service";
 
-const init = (): Map<string, any> => {
-  const deps = new Map<string, any>();
+const userRepository = new UserRepository();
 
-  const userRepository = new UserRepository();
-  deps.set("userRepository", userRepository);
+const sessionRepository = new SessionRepository();
 
-  const authenticationService = new AuthenticationService(userRepository);
-  deps.set("authenticationService", authenticationService);
+const userService = new UserService(userRepository);
 
-  const authenticationController = new AuthenticationController(
-    authenticationService
-  );
-  deps.set("authenticationController", authenticationController);
+const authenticationService = new AuthenticationService(
+  userService,
+  sessionRepository
+);
 
-  const roleRepository = new RoleRepository();
-  deps.set("roleRepository", roleRepository);
+const authenticationController = new AuthenticationController(
+  authenticationService,
+  userService
+);
 
-  const roleService = new RoleService(roleRepository);
-  deps.set("roleService", roleService);
+const roleRepository = new RoleRepository();
 
-  const roleController = new RoleController(roleService);
-  deps.set("roleController", roleController);
+const roleService = new RoleService(roleRepository);
 
-  const mainRouter = new MainRouter(roleController, authenticationController);
-  deps.set("mainRouter", mainRouter);
+const roleController = new RoleController(roleService);
 
-  return deps;
-};
+const mainRouter = new MainRouter(
+  roleController,
+  authenticationController
+);
 
-export default init();
+export default mainRouter;

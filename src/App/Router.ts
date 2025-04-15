@@ -1,6 +1,6 @@
 import { Router } from "express";
-import AuthenticationController from "./controllers/Authentication.Controller";
-import RoleController from "./controllers/Role.Controller";
+import AuthenticationController from "./Controller/Authentication.Controller";
+import RoleController from "./Controller/Role.Controller";
 
 export default class MainRouter {
   router: Router;

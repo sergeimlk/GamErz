@@ -1,5 +1,5 @@
-import { RoleDTO } from "../models/Role.Model";
-import RoleRepository from "../DAOs/Role.Repository";
+import { RoleDTO } from "../Model/Role.Model";
+import RoleRepository from "../DAO/Role.Repository";
 
 class RoleService {
   private readonly ROLES = ["Guest", "Player", "Moderator", "Admin"];

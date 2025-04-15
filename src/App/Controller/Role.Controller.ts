@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
-import RoleService from "../services/Role.Service";
-import { OK } from "../config/httpConstants";
-import handleAsyncController from "../utils/asyncControllerHandler";
+import RoleService from "../Service/Role.Service";
+import { OK } from "../../constants/http";
+import handleAsyncController from "../../utils/asyncControllerHandler";
 
 export default class RoleController {
   private router: Router;

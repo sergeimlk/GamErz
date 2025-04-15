@@ -1,4 +1,4 @@
-import RoleModel, { RoleDTO } from "../models/Role.Model";
+import RoleModel, { RoleDTO } from "../Model/Role.Model";
 import { AbstractCrudRepository } from "./AbstractCrud.Repository";
 
 class RoleRepository extends AbstractCrudRepository<RoleDTO> {
