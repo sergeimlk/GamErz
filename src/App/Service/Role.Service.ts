@@ -1,5 +1,5 @@
-import { IRole } from "src/models/RoleModel";
-import RoleRepository from "../daos/RoleRepository";
+import { RoleDTO } from "../Model/Role.Model";
+import RoleRepository from "../DAO/Role.Repository";
 
 class RoleService {
   private readonly ROLES = ["Guest", "Player", "Moderator", "Admin"];
@@ -29,7 +29,7 @@ class RoleService {
     return targetRoles.size === 0;
   }
 
-  async findAll(): Promise<Array<IRole>> {
+  async findAll(): Promise<Array<RoleDTO>> {
     return await this.roleRepository.findAll();
   }
 }

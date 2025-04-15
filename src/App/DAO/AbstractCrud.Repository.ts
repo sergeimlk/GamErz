@@ -1,7 +1,8 @@
 import { Model, Document } from "mongoose";
-import ICrudDao from "./ICrudDao";
+import InterfaceCrudDao from "./InterfaceCrud.Dao";
 
-export abstract class AbstractCrudRepository<T extends Document> implements ICrudDao<T> {
+
+export abstract class AbstractCrudRepository<T> implements InterfaceCrudDao<T> {
   model: Model<T>;
 
   constructor(model: Model<T>) {
@@ -12,7 +13,7 @@ export abstract class AbstractCrudRepository<T extends Document> implements ICru
     try {
       return await this.model.find().exec();
     } catch (error) {
-      throw new Error(`[DB][Error] Failed to retrieve all documents: ${error}`);
+      throw new Error(`DB: Failed to retrieve all documents: ${error}`);
     }
   }
 
@@ -20,7 +21,7 @@ export abstract class AbstractCrudRepository<T extends Document> implements ICru
     try {
       return await this.model.findById(id).exec();
     } catch (error) {
-      throw new Error(`[DB][Error] Failed to find document by ID: ${error}`);
+      throw new Error(`DB: Failed to find document by ID: ${error}`);
     }
   }
 
@@ -28,7 +29,7 @@ export abstract class AbstractCrudRepository<T extends Document> implements ICru
     try {
       return await this.model.findByIdAndUpdate(id, updateData, { new: true }).exec();
     } catch (error) {
-      throw new Error(`[DB][Error] Failed to update document: ${error}`);
+      throw new Error(`DB: Failed to update document: ${error}`);
     }
   }
 
@@ -36,7 +37,7 @@ export abstract class AbstractCrudRepository<T extends Document> implements ICru
     try {
       await this.model.findByIdAndDelete(id);
     } catch (error) {
-      throw new Error(`[DB][Error] Failed to delete document: ${error}`);
+      throw new Error(`DB: Failed to delete document: ${error}`);
     }
   }
 }

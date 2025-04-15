@@ -1,7 +1,7 @@
-import RoleModel, { IRole } from "../models/RoleModel";
-import { AbstractCrudRepository } from "./AbstractCrudRepository";
+import RoleModel, { RoleDTO } from "../Model/Role.Model";
+import { AbstractCrudRepository } from "./AbstractCrud.Repository";
 
-class RoleRepository extends AbstractCrudRepository<IRole> {
+class RoleRepository extends AbstractCrudRepository<RoleDTO> {
   constructor() {
     super(RoleModel);
   }
@@ -13,7 +13,9 @@ class RoleRepository extends AbstractCrudRepository<IRole> {
         await roleModel.save();
       }
     } catch (error) {
-      throw new Error(`[DB][Error] Failed to save data in database. \n${error}`);
+      throw new Error(
+        `[DB][Error] Failed to save data in database. \n${error}`
+      );
     }
   }
 
@@ -21,7 +23,9 @@ class RoleRepository extends AbstractCrudRepository<IRole> {
     try {
       await RoleModel.deleteMany({});
     } catch (error) {
-      throw new Error(`[DB][Error] Failed to delete data from database. \n${error}`);
+      throw new Error(
+        `[DB][Error] Failed to delete data from database. \n${error}`
+      );
     }
   }
 }

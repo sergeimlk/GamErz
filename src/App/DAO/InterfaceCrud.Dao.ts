@@ -1,6 +1,6 @@
-import { Model, Document } from "mongoose";
+import { Model } from "mongoose";
 
-export default interface ICrudDao<T extends Document> {
+export default interface InterfaceCrudDao<T> {
   model: Model<T>;
 
   findAll(): Promise<Array<T>>;
