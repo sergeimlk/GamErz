@@ -2,7 +2,7 @@ import { RoleDTO } from "../Model/Role.Model";
 import RoleRepository from "../DAO/Role.Repository";
 
 class RoleService {
-  private readonly ROLES = ["Guest", "Player", "Moderator", "Admin"];
+  private readonly ROLES = ["Guest", "Player", "Admin"];
 
   roleRepository: RoleRepository;
 

@@ -1,4 +1,4 @@
-import { Model, Document } from "mongoose";
+import mongoose, { Model, Document } from "mongoose";
 import InterfaceCrudDao from "./InterfaceCrud.Dao";
 
 
@@ -17,7 +17,7 @@ export abstract class AbstractCrudRepository<T> implements InterfaceCrudDao<T> {
     }
   }
 
-  async findById(id: string): Promise<T | null> {
+  async findById(id: mongoose.Types.ObjectId): Promise<T | null> {
     try {
       return await this.model.findById(id).exec();
     } catch (error) {

@@ -42,13 +42,8 @@ export default class AuthenticationController {
         error: "User already exist.",
         user: existingUser
       });
-    }
-    
-    catch (err: unknown) {
-      if (
-        err instanceof Error
-        && err.message.includes("No user found")
-      ) {
+    } catch (err: unknown) {
+      if (err instanceof Error && err.message.includes("No user found")) {
         const userSaved = await this.userService.createUser(userData as UserDTO);
         res.status(OK).json(userSaved); return;
       }
