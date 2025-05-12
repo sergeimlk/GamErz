@@ -26,13 +26,13 @@ export default class SaloonController {
         handleAsyncController((req: Request, res: Response) =>
           Promise.resolve(this.sendMessage(req, res))
         )
+      )
+      .get(
+        "/:saloonId/messages",
+        handleAsyncController((req: Request, res: Response) =>
+          Promise.resolve(this.getMessages(req, res))
+        )
       );
-      // .get(
-      //   "/:saloonId/messages",
-      //   handleAsyncController((req: Request, res: Response) =>
-      //     Promise.resolve(this.login(req, res))
-      //   )
-      // );
 
     return this.router;
   }
@@ -55,6 +55,17 @@ export default class SaloonController {
       }));
 
       res.status(201).json({ message: 'Message envoyé', data: message });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Erreur serveur' });
+    }
+  }
+
+  async getMessages(req: Request, res: Response): Promise<void> {
+    const { saloonId } = req.params;
+    try {
+      const messages = await this.messageService.findBySaloonId(new mongoose.Types.ObjectId(saloonId));
+      res.status(200).json(messages);
     } catch (err) {
       console.error(err);
       res.status(500).json({ error: 'Erreur serveur' });

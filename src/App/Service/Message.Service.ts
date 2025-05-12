@@ -15,4 +15,8 @@ export default class MessageService {
     return messageSaved;
   }
 
+  async findBySaloonId(saloonId: mongoose.Types.ObjectId, latest?: boolean): Promise<Array<MessageDTO>> {
+    const messages = await this.messageRepository.findBySaloonId(saloonId, latest);
+    return messages;
+  }
 }
