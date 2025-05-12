@@ -11,7 +11,9 @@ const saloonMongooseSchema: Schema = new Schema({
 export const saloonSchema = z.object({
   name: z.string().min(1).max(100),
   owners: z.array(
-    z.string().regex(/^[0-9a-fA-F]{24}$/, 'Invalid Mongo ObjectId')
+    z.string()
+      .regex(/^[0-9a-fA-F]{24}$/, 'Invalid Mongo ObjectId')
+      .transform((value) => new mongoose.Types.ObjectId(value))
   )
 });
 

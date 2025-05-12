@@ -1,14 +1,20 @@
-import { Router } from "express";
+import { Router, Request, Response } from "express";
 import UserService from "../Service/User.Service";
 import handleAsyncController from "../../utils/asyncControllerHandler";
 import SaloonService from "../Service/Saloon.Service";
+import { BAD_REQUEST } from "../../constants/http";
+import mongoose from "mongoose";
+import { messageSchema } from "../Model/Message.Model";
+import MessageService from "../Service/Message.Service";
+import MessageDTO from "../Model/Message.Model";
 
 export default class SaloonController {
   private router: Router;
 
   constructor(
     private saloonService: SaloonService,
-    private userService: UserService
+    private userService: UserService,
+    private messageService: MessageService
   ) {
     this.router = Router();
   }
@@ -33,22 +39,20 @@ export default class SaloonController {
 
   async sendMessage(req: Request, res: Response): Promise<void> {
     const { saloonId } = req.params;
-    const { senderId, content } = req.body;
+    const { senderId, content } = messageSchema.parse(req.body);
 
     try {
-      const saloon = await Saloon.findById(saloonId);
-      if (!saloon) return res.status(404).json({ error: 'Saloon introuvable' });
+      const saloon = await this.saloonService.findById(new mongoose.Types.ObjectId(saloonId));
+      if (!saloon) {res.status(BAD_REQUEST).json({ error: 'Saloon introuvable' })};
 
-      const sender = await User.findById(senderId);
-      if (!sender) return res.status(404).json({ error: 'Expéditeur inconnu' });
+      const sender = await this.userService.findById(senderId);
+      if (!sender) {res.status(BAD_REQUEST).json({ error: 'Expéditeur inconnu' })};
 
-      const message = new Message({
-        saloon: saloonId,
-        sender: senderId,
+      const message = await this.messageService.createMessage(new MessageDTO({
+        saloonId: saloon._id,
+        senderId,
         content
-      });
-
-      await message.save();
+      }));
 
       res.status(201).json({ message: 'Message envoyé', data: message });
     } catch (err) {

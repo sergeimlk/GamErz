@@ -15,4 +15,9 @@ export default class MessageRepository extends AbstractCrudRepository<MessageDTO
     
     return messages;
   }
+
+  async createMessage(message: MessageDTO): Promise<MessageDTO> {
+    const messageSaved = await this.model.create(message);
+    return messageSaved;
+  }
 } 

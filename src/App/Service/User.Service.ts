@@ -2,9 +2,15 @@ import { SALT_ROUNDS } from "../../constants/env";
 import UserRepository from "../DAO/User.Repository";
 import { UserDTO } from "../Model/User.Model";
 import bcrypt from "bcrypt";
+import mongoose from "mongoose";
 
 export default class UserService {
   constructor(private userRepository: UserRepository) {}
+
+  async findById(id: mongoose.Types.ObjectId) {
+    const userFound = await this.userRepository.findById(id);
+    return userFound;
+  }
 
   async findByEmail(email: string) {
     const userFound = await this.userRepository.findByEmail(email);
