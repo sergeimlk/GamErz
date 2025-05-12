@@ -1,7 +1,7 @@
-import logger from "../utils/logger";
-import { SERVER_PORT } from "../constants/env";
-import dbConnect from "../config/database";
-import init from "./init";
+import logger from "./utils/logger";
+import { SERVER_PORT } from "./constants/env";
+import dbConnect from "./config/database";
+import init from "./App/init";
 
 class App {
   static run() {

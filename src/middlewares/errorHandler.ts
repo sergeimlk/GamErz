@@ -1,6 +1,6 @@
 import { ErrorRequestHandler } from "express";
-import { INTERNAL_SERVER_ERROR } from "../../constants/http";
-import logger from "../logger";
+import { INTERNAL_SERVER_ERROR } from "../constants/http";
+import logger from "../utils/logger";
 
 const errorHandler: ErrorRequestHandler = (error, req, res, _) => {
   logger.error(`PATH: ${req.path}\n${error}`);

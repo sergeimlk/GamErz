@@ -1,5 +1,5 @@
 import express, { Application } from "express";
-import errorHandler from "../utils/middlewares/errorHandler";
+import errorHandler from "../middlewares/errorHandler";
 import handleAsyncController from "../utils/asyncControllerHandler";
 import cookieParser from "cookie-parser";
 import cors from "cors";
