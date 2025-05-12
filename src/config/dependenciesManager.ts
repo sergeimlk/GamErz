@@ -8,9 +8,10 @@ import RoleService from "../App/Service/Role.Service";
 import SessionRepository from "../App/DAO/Session.Repository";
 import UserService from "../App/Service/User.Service";
 import MessageRepository from "../App/DAO/Message.Repository";
-import SaloonRepository from "src/App/DAO/SaloonRepository";
-import SaloonService from "src/App/Service/Saloon.Service";
-import SaloonController from "src/App/Controller/Saloon.Controller";
+import SaloonRepository from "../App/DAO/SaloonRepository";
+import SaloonService from "../App/Service/Saloon.Service";
+import SaloonController from "../App/Controller/Saloon.Controller";
+import MessageService from "../App/Service/Message.Service";
 
 const userRepository = new UserRepository();
 
@@ -36,9 +37,10 @@ const roleController = new RoleController(roleService);
 const messageRepository = new MessageRepository();
 const saloonRepository = new SaloonRepository();
 
-const saloonService = new SaloonService(saloonRepository, messageRepository);
+const saloonService = new SaloonService(saloonRepository);
+const messageService = new MessageService(messageRepository);
 
-const saloonController = new SaloonController(saloonService, userService);
+const saloonController = new SaloonController(saloonService, userService, messageService);
 
 const mainRouter = new MainRouter(
   roleController,
