@@ -16,4 +16,5 @@ dist/
 .qodo
 
 # local test
-test.rest
+__test__
+__test__/*
