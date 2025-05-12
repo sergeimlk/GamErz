@@ -2,7 +2,7 @@ import { Router, Request, Response } from "express";
 import UserService from "../Service/User.Service";
 import handleAsyncController from "../../utils/asyncControllerHandler";
 import SaloonService from "../Service/Saloon.Service";
-import { BAD_REQUEST } from "../../constants/http";
+import { BAD_REQUEST, CREATED, INTERNAL_SERVER_ERROR, OK } from "../../constants/http";
 import mongoose from "mongoose";
 import { messageSchema } from "../Model/Message.Model";
 import MessageService from "../Service/Message.Service";
@@ -43,10 +43,10 @@ export default class SaloonController {
 
     try {
       const saloon = await this.saloonService.findById(new mongoose.Types.ObjectId(saloonId));
-      if (!saloon) {res.status(BAD_REQUEST).json({ error: 'Saloon introuvable' })};
+      if (!saloon) { throw new Error("SaloonEntity: No entity found corresponding to these creterias.")};
 
       const sender = await this.userService.findById(senderId);
-      if (!sender) {res.status(BAD_REQUEST).json({ error: 'Expéditeur inconnu' })};
+      if (!sender) { throw new Error("UserEntity: No entity found corresponding to these creterias.")};
 
       const message = await this.messageService.createMessage(new MessageDTO({
         saloonId: saloon._id,
@@ -54,21 +54,16 @@ export default class SaloonController {
         content
       }));
 
-      res.status(201).json({ message: 'Message envoyé', data: message });
+      res.status(CREATED).json({ message: 'Message sent', data: message });
     } catch (err) {
       console.error(err);
-      res.status(500).json({ error: 'Erreur serveur' });
+      res.status(INTERNAL_SERVER_ERROR).json({ error: 'Internal server error' });
     }
   }
 
   async getMessages(req: Request, res: Response): Promise<void> {
     const { saloonId } = req.params;
-    try {
-      const messages = await this.messageService.findBySaloonId(new mongoose.Types.ObjectId(saloonId));
-      res.status(200).json(messages);
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Erreur serveur' });
-    }
+    const messages = await this.messageService.findBySaloonId(new mongoose.Types.ObjectId(saloonId));
+    res.status(OK).json(messages);
   }
 }

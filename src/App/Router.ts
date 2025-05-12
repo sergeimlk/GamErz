@@ -4,7 +4,7 @@ import RoleController from "./Controller/Role.Controller";
 import SaloonController from "./Controller/Saloon.Controller";
 
 export default class MainRouter {
-  router: Router;
+  private readonly router: Router;
 
   constructor(
     private roleController: RoleController,
@@ -15,12 +15,13 @@ export default class MainRouter {
   }
 
   initRoutes(): Router {
-    const authHandler = this.authenticationController.handleAuthentication();
-    const rolesHandler = this.roleController.handleRoles();
+    // const authHandler = this.authenticationController.handleAuthentication();
+    // const rolesHandler = this.roleController.handleRoles();
+    // const saloonMessagesHandler = this.saloonController.handleSaloonMessages();
 
-    this.router.use("/auth", authHandler);
-    this.router.use("/roles", rolesHandler);
-    this.router.use("/saloon", )
+    this.router.use("/auth", this.authenticationController.handleAuthentication());
+    this.router.use("/roles", this.roleController.handleRoles());
+    this.router.use("/saloon", this.saloonController.handleSaloonMessages());
 
     return this.router;
   }

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import logger from "../utils/logger"
+import logger from "./logger"
 import { DB_URI } from "../constants/env"
 
 async function connect(): Promise<mongoose.Mongoose> {

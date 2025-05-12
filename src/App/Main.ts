@@ -1,12 +1,11 @@
-import logger from "./utils/logger";
-import { SERVER_PORT } from "./constants/env";
-import dbConnect from "./config/database";
-import init from "./App/init";
+import logger from "../utils/logger";
+import { SERVER_PORT } from "../constants/env";
+import dbConnect from "../utils/database";
+import { Application } from "express";
 
-class App {
-  static run() {
+export default class App {
+  static run(app: Application) {
     try {
-      const app = init();
       dbConnect().then(() => {
         app.listen(SERVER_PORT, async (error) => {
           if (error) {
@@ -22,5 +21,3 @@ class App {
     }
   }
 }
-
-App.run();
