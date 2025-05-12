@@ -47,7 +47,7 @@ export default class AuthenticationController {
     catch (err: unknown) {
       if (
         err instanceof Error
-        && err.message === "UserEntity: No user found for the given informations."
+        && err.message.includes("No user found")
       ) {
         const userSaved = await this.userService.createUser(userData as UserDTO);
         res.status(OK).json(userSaved); return;
