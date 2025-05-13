@@ -1,6 +1,7 @@
 import MessageRepository from "../DAO/Message.Repository";
 import { MessageDTO } from "../Model/Message.Model";
 import mongoose from "mongoose";
+import socketManager from "../../utils/socketManager";
 
 export default class MessageService {
   constructor(private messageRepository: MessageRepository) {}
@@ -12,6 +13,14 @@ export default class MessageService {
 
   async createMessage(message: MessageDTO): Promise<MessageDTO> {
     const messageSaved = await this.messageRepository.createMessage(message);
+    
+    // Envoyer le message via Socket.IO au salon correspondant
+    socketManager.sendMessageToSaloon(
+      messageSaved.saloonId.toString(),
+      'new-message',
+      messageSaved
+    );
+    
     return messageSaved;
   }
 

@@ -8,6 +8,7 @@ import { messageSchema } from "../Model/Message.Model";
 import MessageService from "../Service/Message.Service";
 import MessageDTO from "../Model/Message.Model";
 import { saloonSchema } from "../Model/Saloon.Model";
+import socketManager from "../../utils/socketManager";
 
 export default class SaloonController {
   private router: Router;
@@ -33,6 +34,12 @@ export default class SaloonController {
       )
       .get("/:saloonId/messages",
         handleAsyncController(async (req: Request, res: Response) => await this.getMessages(req, res))
+      )
+      .post("/:saloonId/join",
+        handleAsyncController(async (req: Request, res: Response) => await this.joinSaloon(req, res))
+      )
+      .post("/:saloonId/leave",
+        handleAsyncController(async (req: Request, res: Response) => await this.leaveSaloon(req, res))
       );
 
     return this.router;
@@ -41,6 +48,10 @@ export default class SaloonController {
   async createSaloon(req: Request, res: Response) {
     const data = saloonSchema.parse(req.body);
     const saloon = await this.saloonService.createSaloon(data);
+    
+    // Notifier tous les utilisateurs de la création d'un nouveau salon
+    socketManager.broadcastMessage('new-saloon', saloon);
+    
     res.status(OK).json(saloon);
   }
 
@@ -65,6 +76,8 @@ export default class SaloonController {
       content
     }));
 
+    // Le message est déjà envoyé via Socket.IO dans le MessageService
+    
     res.status(CREATED).json({ message: 'Message sent', data: message });
   }
 
@@ -72,5 +85,49 @@ export default class SaloonController {
     const { saloonId } = req.params;
     const messages = await this.messageService.findBySaloonId(new mongoose.Types.ObjectId(saloonId));
     res.status(OK).json(messages);
+  }
+  
+  async joinSaloon(req: Request, res: Response): Promise<void> {
+    const { saloonId } = req.params;
+    const { userId } = req.body;
+    
+    // Vérifier que le salon existe
+    const saloon = await this.saloonService.findById(new mongoose.Types.ObjectId(saloonId));
+    if (!saloon) { throw new Error("SaloonEntity: No entity found corresponding to these creterias.")};
+    
+    // Vérifier que l'utilisateur existe
+    const user = await this.userService.findById(userId);
+    if (!user) { throw new Error("UserEntity: No entity found corresponding to these creterias.")};
+    
+    // Notifier les autres utilisateurs du salon qu'un nouvel utilisateur a rejoint
+    socketManager.sendMessageToSaloon(
+      saloonId,
+      'user-joined',
+      { userId, pseudo: user.pseudo }
+    );
+    
+    res.status(OK).json({ message: 'Joined saloon successfully' });
+  }
+  
+  async leaveSaloon(req: Request, res: Response): Promise<void> {
+    const { saloonId } = req.params;
+    const { userId } = req.body;
+    
+    // Vérifier que le salon existe
+    const saloon = await this.saloonService.findById(new mongoose.Types.ObjectId(saloonId));
+    if (!saloon) { throw new Error("SaloonEntity: No entity found corresponding to these creterias.")};
+    
+    // Vérifier que l'utilisateur existe
+    const user = await this.userService.findById(userId);
+    if (!user) { throw new Error("UserEntity: No entity found corresponding to these creterias.")};
+    
+    // Notifier les autres utilisateurs du salon qu'un utilisateur a quitté
+    socketManager.sendMessageToSaloon(
+      saloonId,
+      'user-left',
+      { userId, pseudo: user.pseudo }
+    );
+    
+    res.status(OK).json({ message: 'Left saloon successfully' });
   }
 }

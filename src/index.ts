@@ -1,4 +1,5 @@
 import express, { Application } from "express";
+import { createServer } from "http";
 import App from "./App/Main";
 import errorHandler from "./middlewares/errorHandler";
 import handleAsyncController from "./utils/asyncControllerHandler";
@@ -7,32 +8,37 @@ import cors from "cors";
 import mainRouter from "./utils/dependenciesManager";
 import { FRONT_URL } from "./constants/env";
 import { OK } from "./constants/http";
+import socketManager from "./utils/socketManager";
 
-function init(): Application {
-  const server = express();
+function init(): { app: Application, server: any } {
+  const app = express();
+  const httpServer = createServer(app);
 
-  server.use(express.json());
-  server.use(express.urlencoded({ extended: true }));
-  server.use(cookieParser());
-  server.use(
+  // Initialiser Socket.IO avec le serveur HTTP
+  socketManager.initialize(httpServer);
+
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+  app.use(cookieParser());
+  app.use(
     cors({
       origin: FRONT_URL,
       credentials: true,
     })
   );
 
-  server.get(
+  app.get(
     "/",
     handleAsyncController(async (_, res) => {
       res.status(OK).json({ status: "healthy" });
     })
   );
 
-  server.use("/api", mainRouter.initRoutes());
-  server.use(errorHandler);
+  app.use("/api", mainRouter.initRoutes());
+  app.use(errorHandler);
 
-  return server;
+  return { app, server: httpServer };
 }
 
-const server = init();
-App.run(server);
+const { app, server } = init();
+App.run(app, server);
