@@ -14,7 +14,6 @@ function init(): { app: Application, server: any } {
   const app = express();
   const httpServer = createServer(app);
 
-  // Initialiser Socket.IO avec le serveur HTTP
   socketManager.initialize(httpServer);
 
   app.use(express.json());

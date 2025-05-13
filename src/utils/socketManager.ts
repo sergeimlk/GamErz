@@ -10,7 +10,7 @@ export interface SocketUser {
 
 class SocketManager {
   private io: SocketIOServer | null = null;
-  private connectedUsers: Map<string, string> = new Map(); // userId -> socketId
+  private connectedUsers: Map<string, string> = new Map();
 
   initialize(httpServer: HttpServer): SocketIOServer {
     this.io = new SocketIOServer(httpServer, {
@@ -23,27 +23,22 @@ class SocketManager {
     this.io.on('connection', (socket) => {
       logger.info(`Socket connected: ${socket.id}`);
 
-      // Authentifier l'utilisateur et stocker son ID
       socket.on('authenticate', (userId: string) => {
         this.connectedUsers.set(userId, socket.id);
         logger.info(`User ${userId} authenticated with socket ${socket.id}`);
         
-        // Rejoindre les salons de l'utilisateur
         socket.on('join-saloon', (saloonId: string) => {
           socket.join(saloonId);
           logger.info(`Socket ${socket.id} joined saloon ${saloonId}`);
         });
         
-        // Quitter un salon
         socket.on('leave-saloon', (saloonId: string) => {
           socket.leave(saloonId);
           logger.info(`Socket ${socket.id} left saloon ${saloonId}`);
         });
       });
 
-      // Gérer la déconnexion
       socket.on('disconnect', () => {
-        // Trouver et supprimer l'utilisateur déconnecté
         for (const [userId, socketId] of this.connectedUsers.entries()) {
           if (socketId === socket.id) {
             this.connectedUsers.delete(userId);
@@ -57,7 +52,6 @@ class SocketManager {
     return this.io;
   }
 
-  // Envoyer un message à un salon spécifique
   sendMessageToSaloon(saloonId: string, event: string, data: any): void {
     if (!this.io) {
       logger.error('Socket.IO server not initialized');
@@ -67,7 +61,6 @@ class SocketManager {
     this.io.to(saloonId).emit(event, data);
   }
 
-  // Envoyer un message à un utilisateur spécifique
   sendMessageToUser(userId: string, event: string, data: any): void {
     if (!this.io) {
       logger.error('Socket.IO server not initialized');
@@ -82,7 +75,6 @@ class SocketManager {
     }
   }
 
-  // Diffuser un message à tous les utilisateurs connectés
   broadcastMessage(event: string, data: any): void {
     if (!this.io) {
       logger.error('Socket.IO server not initialized');
@@ -92,16 +84,13 @@ class SocketManager {
     this.io.emit(event, data);
   }
 
-  // Vérifier si un utilisateur est connecté
   isUserConnected(userId: string): boolean {
     return this.connectedUsers.has(userId);
   }
 
-  // Obtenir l'instance Socket.IO
   getIO(): SocketIOServer | null {
     return this.io;
   }
 }
 
-// Singleton pour être accessible partout dans l'application
 export default new SocketManager();

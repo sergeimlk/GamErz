@@ -14,7 +14,6 @@ export default class MessageService {
   async createMessage(message: MessageDTO): Promise<MessageDTO> {
     const messageSaved = await this.messageRepository.createMessage(message);
     
-    // Envoyer le message via Socket.IO au salon correspondant
     socketManager.sendMessageToSaloon(
       messageSaved.saloonId.toString(),
       'new-message',

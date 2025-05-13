@@ -49,7 +49,6 @@ export default class SaloonController {
     const data = saloonSchema.parse(req.body);
     const saloon = await this.saloonService.createSaloon(data);
     
-    // Notifier tous les utilisateurs de la création d'un nouveau salon
     socketManager.broadcastMessage('new-saloon', saloon);
     
     res.status(OK).json(saloon);
@@ -76,8 +75,6 @@ export default class SaloonController {
       content
     }));
 
-    // Le message est déjà envoyé via Socket.IO dans le MessageService
-    
     res.status(CREATED).json({ message: 'Message sent', data: message });
   }
 
@@ -91,15 +88,12 @@ export default class SaloonController {
     const { saloonId } = req.params;
     const { userId } = req.body;
     
-    // Vérifier que le salon existe
     const saloon = await this.saloonService.findById(new mongoose.Types.ObjectId(saloonId));
     if (!saloon) { throw new Error("SaloonEntity: No entity found corresponding to these creterias.")};
     
-    // Vérifier que l'utilisateur existe
     const user = await this.userService.findById(userId);
     if (!user) { throw new Error("UserEntity: No entity found corresponding to these creterias.")};
     
-    // Notifier les autres utilisateurs du salon qu'un nouvel utilisateur a rejoint
     socketManager.sendMessageToSaloon(
       saloonId,
       'user-joined',
@@ -113,15 +107,12 @@ export default class SaloonController {
     const { saloonId } = req.params;
     const { userId } = req.body;
     
-    // Vérifier que le salon existe
     const saloon = await this.saloonService.findById(new mongoose.Types.ObjectId(saloonId));
     if (!saloon) { throw new Error("SaloonEntity: No entity found corresponding to these creterias.")};
     
-    // Vérifier que l'utilisateur existe
     const user = await this.userService.findById(userId);
     if (!user) { throw new Error("UserEntity: No entity found corresponding to these creterias.")};
     
-    // Notifier les autres utilisateurs du salon qu'un utilisateur a quitté
     socketManager.sendMessageToSaloon(
       saloonId,
       'user-left',
