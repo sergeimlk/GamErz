@@ -37,9 +37,9 @@ export default class AuthenticationService {
 
   getCookieOptions(token: string): CookieOptions {
     return {
-      sameSite: "strict",
+      sameSite: "none",
       httpOnly: true,
-      secure: NODE_ENV === "production",
+      secure: true,
       expires: new Date(
         Date.now() + (token === "accessToken" ? JWT_MAX_AGE : JWT_REFRESH_MAX_AGE)
       )
