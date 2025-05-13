@@ -2,7 +2,7 @@ import { Router, Request, Response } from "express";
 import UserService from "../Service/User.Service";
 import handleAsyncController from "../../utils/asyncControllerHandler";
 import SaloonService from "../Service/Saloon.Service";
-import { CREATED, INTERNAL_SERVER_ERROR, OK } from "../../constants/http";
+import { CREATED, OK } from "../../constants/http";
 import mongoose from "mongoose";
 import { messageSchema } from "../Model/Message.Model";
 import MessageService from "../Service/Message.Service";
@@ -44,7 +44,7 @@ export default class SaloonController {
     res.status(OK).json(saloon);
   }
 
-  async findAll(_: any, res: Response): Promise<void> {
+  async findAll(req: Request, res: Response): Promise<void> {
     const saloons = await this.saloonService.findAll();
     res.status(OK).json(saloons);
   }

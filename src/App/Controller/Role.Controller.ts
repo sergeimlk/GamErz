@@ -11,17 +11,14 @@ export default class RoleController {
   }
 
   handleRoles(): Router {
-    this.router.get(
-      "/",
-      handleAsyncController((req: Request, res: Response) =>
-        Promise.resolve(this.findAll(req, res))
-      )
+    this.router.get("/",
+      handleAsyncController(async (req: Request, res: Response) => await this.findAll(req, res))
     );
 
     return this.router;
   }
 
-  async findAll(_: Request, res: Response): Promise<void> {
+  async findAll(req: Request, res: Response): Promise<void> {
     const roles = await this.roleService.findAll();
     res.status(OK).json(roles);
   }

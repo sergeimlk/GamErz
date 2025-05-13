@@ -18,17 +18,11 @@ export default class AuthenticationController {
 
   handleAuthentication(): Router {
     this.router
-      .post(
-        "/register",
-        handleAsyncController((req: Request, res: Response) =>
-          Promise.resolve(this.register(req, res))
-        )
+      .post("/register",
+        handleAsyncController(async (req: Request, res: Response) => await this.register(req, res))
       )
-      .post(
-        "/login",
-        handleAsyncController((req: Request, res: Response) =>
-          Promise.resolve(this.login(req, res))
-        )
+      .post("/login",
+        handleAsyncController(async (req: Request, res: Response) => await this.login(req, res))
       );
 
     return this.router;
