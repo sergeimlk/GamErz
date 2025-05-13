@@ -15,13 +15,9 @@ export default class MainRouter {
   }
 
   initRoutes(): Router {
-    // const authHandler = this.authenticationController.handleAuthentication();
-    // const rolesHandler = this.roleController.handleRoles();
-    // const saloonMessagesHandler = this.saloonController.handleSaloonMessages();
-
     this.router.use("/auth", this.authenticationController.handleAuthentication());
     this.router.use("/roles", this.roleController.handleRoles());
-    this.router.use("/saloon", this.saloonController.handleSaloonMessages());
+    this.router.use("/saloon", this.saloonController.handleSaloon());
 
     return this.router;
   }

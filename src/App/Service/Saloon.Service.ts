@@ -15,4 +15,12 @@ export default class SaloonService {
     }
     return saloonFound;
   }
+
+  async findAll(): Promise<Array<SaloonDTO>> {
+    return await this.saloonRepository.findAll();
+  }
+
+  async createSaloon(saloonDTO: Partial<SaloonDTO>): Promise<SaloonDTO> {
+    return await this.saloonRepository.createSaloon(saloonDTO);
+  }
 }
