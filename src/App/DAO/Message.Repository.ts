@@ -8,8 +8,8 @@ export default class MessageRepository extends AbstractCrudRepository<MessageDTO
   }
 
   async findBySaloonId(saloonId: mongoose.Types.ObjectId, latest?: boolean): Promise<Array<MessageDTO>> {
-    const messages = await this.model.find({ saloon: saloonId })
-      .populate('sender', 'name')
+    const messages = await this.model.find({ saloonId })
+      .populate('senderId', 'name')
       .sort({ createdAt: (latest ? 1 : -1) })
       .limit(50);
     
